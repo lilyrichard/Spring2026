@@ -86,11 +86,11 @@ class structure:
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
                 read_Clm(self,"/Users/lricha95/Library/CloudStorage/OneDrive-KennesawStateUniversity(2)/Research/opt_camphor_cat/Clm_optimized_camphor/Clm_" + str(orb) + ".dat")
 
-        elif target == "vertonal_cat":
+        elif target == "vertonal":
             Norb = 2
             HOMO_ind = 31
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
-                read_Clm(self,"/home/lricha95/LIED/Clms/" + target + "/Clm_" + str(orb) + ".dat")
+                read_Clm(self,"/Users/lricha95/Library/CloudStorage/OneDrive-KennesawStateUniversity(2)/Research/opt_fenchone_cat/Clms/Clm_" + str(orb) + ".dat")
         elif target == "N2O4_1_8":
             Norb = 5
             HOMO_ind = 17
