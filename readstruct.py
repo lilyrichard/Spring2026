@@ -80,7 +80,7 @@ class structure:
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
                 read_Clm(self,"/home/lricha95/LIED/Clms/" + target + "/Clm_" + str(orb) + ".dat")
 
-        elif target == "camphor_cat":
+        elif target == "camphor":
             Norb = 2 
             HOMO_ind = 31
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
