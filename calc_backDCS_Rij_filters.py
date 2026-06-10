@@ -233,7 +233,7 @@ def iso_IAM(i_E_max):
 
                     MIT_target_iso[:i_E_max] += 2.*(f1[:i_E_max]*np.conjugate(f2[:i_E_max])).real * \
                         np.sin(q_iso*R12)/(q_iso*R12)
-        data = np.zeros((nE,2))
+        data = np.zeros((nE,3))
         data[:, 0] = nrg/eV
         data[:i_E_max, 1] = MIT_target_iso[:i_E_max] #just MIT
         data[:i_E_max, 2] = MIT_target_iso[:i_E_max] + I_A[:i_E_max]
@@ -334,22 +334,27 @@ if __name__ == '__main__':
         np.savetxt(dir + Target + '_TI-IAM_Rij_' + threshold_case + '_' + str(np.round(I,decimals=2)) + '.dat', data)
     
     print('Done.')
+    
+    # ----------------------------------------------------------------------------
+    #             Plotting Results (after all computations are complete)
+    # ----------------------------------------------------------------------------
+    fig, axs = plt.subplots(3, 1)  # 3 rows, 1 column
 
-#PLOTTING RESULTS
-fig, axs = plt.subplots(3, 1)  # 3 rows, 1 column
+    target_dirs = [('camphor', 'camphor/'), ('fenchone', 'fenchone/')]
+    
+    for ax, threshold in [(axs[0], 'lt4'), (axs[1], 'lt6'), (axs[2], 'lt8')]:
+        for target_name, target_dir in target_dirs:
+            fname = target_name + '_IAM_Rij_' + threshold + '_0.41.dat'
+            data = np.loadtxt(target_dir + fname)
+            ax.plot(data[:, 0], data[:, 2], label=target_name)
+        ax.set_title("Rij < " + threshold[2:])
+        ax.legend()
 
-axs[0].plot(np.loadtxt('camphor_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt4_0.41.dat')[:, 2], label= 'camphor')
-axs[0].plot(np.loadtxt('fenchone_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt4_0.41.dat')[:, 2], label= 'fenchone')
-axs[0].set_title("Rij < 4")
+    axs[0].set_ylabel('Differential Cross Section (a.u.)')
+    axs[1].set_ylabel('Differential Cross Section (a.u.)')
+    axs[2].set_ylabel('Differential Cross Section (a.u.)')
+    axs[2].set_xlabel('Energy (eV)')
 
-axs[1].plot(np.loadtxt('camphor_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt6_0.41.dat')[:, 2], label= 'camphor')
-axs[1].plot(np.loadtxt('fenchone_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt6_0.41.dat')[:, 2], label= 'fenchone')
-axs[1].set_title("Rij < 6")
-
-axs[2].plot(np.loadtxt('camphor_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt8_0.41.dat')[:, 2], label= 'camphor')
-axs[2].plot(np.loadtxt('fenchone_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt8_0.41.dat')[:, 2], label= 'fenchone')
-axs[2].set_title("Rij < 8")
-
-plt.tight_layout()
-plt.savefig("Filtered_BL_analysis.pdf")
-plt.show()
+    plt.tight_layout()
+    plt.savefig("Filtered_BL_analysis.pdf")
+    plt.show()
