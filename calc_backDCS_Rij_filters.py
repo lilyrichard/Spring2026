@@ -30,7 +30,7 @@ omega = 2.*np.pi*c/wavelen
 TS_case = 'eq'
 # TS_case = 'ff'
 # TS_case = 'Ey'
-Target = 'camphor'
+Target = 'fenchone'
 # Target = 'butane_anti'
 # Target = 'butane_gauche'
 dir = Target + '/'
@@ -72,7 +72,7 @@ I = 0.41  # intensity in units of 1e14 W/cm^2
 # ----------------------------------------------------------------------------
 
 if TS_case == 'eq':
-    inp = Target + '.xyz'
+    inp = Target + '_cat_eq.xyz'
 elif TS_case == 'ff':
     inp = Target + '_10fs_0E_cart.dat'
 elif TS_case == 'Ey':
@@ -84,14 +84,15 @@ if __name__ == '__main__': print('Reading coordinates from', inp)
 with open(inp) as file:
     target_cart = []
     atom = []
-    for line in file:
-        # print(line)
+    for i, line in enumerate(file):
+        if i < 2:
+            continue
         cart = np.zeros(3)
-        tmp = line.rsplit()
-        # print(tmp[3])
+        tmp = line.split()
+        if len(tmp) < 4:
+            continue
         atom.append(tmp[0])
-        cart[0:3] = tmp[1:4]
-        # print(tmp[0], cart[0:3])
+        cart[0:3] = np.array(tmp[1:4], dtype=float)
         cart *= angs
         target_cart.append(cart)
 
@@ -110,7 +111,7 @@ cm = 1e7*nm
 # get theta grid
 f_H = np.zeros( np.size(nrg), dtype=np.complex128 )
 f_C = np.zeros( np.size(nrg), dtype=np.complex128 )
-for i_E in range(0, np.size(nrg)):
+for i_E in range(50, np.size(nrg)):
     tmp_data = np.loadtxt(fold_H + 'E' + str(np.int32(np.rint(nrg[i_E]/eV)))  + '/scatamp.dat')
     tmp_data2 = np.loadtxt(fold_C + 'E' + str(np.int32(np.rint(nrg[i_E]/eV)))  + '/scatamp.dat')
     # Only take 180 degrees
