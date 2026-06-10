@@ -30,7 +30,7 @@ omega = 2.*np.pi*c/wavelen
 TS_case = 'eq'
 # TS_case = 'ff'
 # TS_case = 'Ey'
-Target = 'fenchone'
+Target = 'camphor'
 # Target = 'butane_anti'
 # Target = 'butane_gauche'
 dir = Target + '/'
@@ -236,7 +236,7 @@ def iso_IAM(i_E_max):
         data = np.zeros((nE,2))
         data[:, 0] = nrg/eV
         data[:i_E_max, 1] = MIT_target_iso[:i_E_max] #just MIT
-        data[:i_E_max, 1] = MIT_target_iso[:i_E_max] + I_A[:i_E_max]
+        data[:i_E_max, 2] = MIT_target_iso[:i_E_max] + I_A[:i_E_max]
         np.savetxt(dir + Target + '_IAM_Rij_lt' + str(R12_threshold) + '_' + str(np.round(I,decimals=2)) +'.dat', data)
     return
 
@@ -330,9 +330,26 @@ if __name__ == '__main__':
         data = np.zeros((nE,3))
         data[:, 0] = nrg/eV
         data[:i_E_max, 1] = MIT_target_avg/ norm_target + I_A[:i_E_max]
-        data[:i_E_max, 2] = I_A[:i_E_max] * norm_target + MIT_target_avg
+        data[:i_E_max, 2] = I_A[:i_E_max] * norm_target + MIT_target_avg #which one of these is correct?
         np.savetxt(dir + Target + '_TI-IAM_Rij_' + threshold_case + '_' + str(np.round(I,decimals=2)) + '.dat', data)
     
     print('Done.')
 
+#PLOTTING RESULTS
+fig, axs = plt.subplots(3, 1)  # 3 rows, 1 column
 
+axs[0].plot(np.loadtxt('camphor_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt4_0.41.dat')[:, 2], label= 'camphor')
+axs[0].plot(np.loadtxt('fenchone_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt4_0.41.dat')[:, 2], label= 'fenchone')
+axs[0].set_title("Rij < 4")
+
+axs[1].plot(np.loadtxt('camphor_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt6_0.41.dat')[:, 2], label= 'camphor')
+axs[1].plot(np.loadtxt('fenchone_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt6_0.41.dat')[:, 2], label= 'fenchone')
+axs[1].set_title("Rij < 6")
+
+axs[2].plot(np.loadtxt('camphor_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('camphor_IAM_Rij_lt8_0.41.dat')[:, 2], label= 'camphor')
+axs[2].plot(np.loadtxt('fenchone_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('fenchone_IAM_Rij_lt8_0.41.dat')[:, 2], label= 'fenchone')
+axs[2].set_title("Rij < 8")
+
+plt.tight_layout()
+plt.savefig("Filtered_BL_analysis.pdf")
+plt.show()
