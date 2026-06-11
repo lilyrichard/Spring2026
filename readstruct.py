@@ -74,11 +74,11 @@ class structure:
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
                 read_Clm(self, "Clms/" + target + "/Clm_" + str(orb) + ".dat")
 
-        elif target == "fenchone_cat":
+        elif target == "vertonal":
             Norb = 2
             HOMO_ind = 31
             for orb in range(HOMO_ind, HOMO_ind - Norb, -1):
-                read_Clm(self,"/home/lricha95/LIED/Clms/" + target + "/Clm_" + str(orb) + ".dat")
+                read_Clm(self, "/Users/lricha95/Library/CloudStorage/OneDrive-KennesawStateUniversity(2)/Research/opt_vertonal_cat/Clm_optimized_vertonal/Clm_" + str(orb) + ".dat")
 
         elif target == "camphor":
             Norb = 2 

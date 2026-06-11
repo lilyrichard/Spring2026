@@ -30,7 +30,7 @@ omega = 2.*np.pi*c/wavelen
 TS_case = 'eq'
 # TS_case = 'ff'
 # TS_case = 'Ey'
-Target = 'camphor'
+Target = 'fenchone'
 # Target = 'butane_anti'
 # Target = 'butane_gauche'
 dir = Target + '/'
@@ -105,13 +105,13 @@ if __name__ == '__main__': print('Number of orbitals are', Norb)
 # ----------------------------------------------------------------------------
 #             Read the DCS from files at a range of energy
 # ----------------------------------------------------------------------------
-fold_H = '../../data/H/'
-fold_C = '../../data/C/'
+fold_H = 'data/H/'
+fold_C = 'data/C/'
 cm = 1e7*nm
 # get theta grid
 f_H = np.zeros( np.size(nrg), dtype=np.complex128 )
 f_C = np.zeros( np.size(nrg), dtype=np.complex128 )
-for i_E in range(50, np.size(nrg)):
+for i_E in range(15, np.size(nrg)): ##is this range correct?
     tmp_data = np.loadtxt(fold_H + 'E' + str(np.int32(np.rint(nrg[i_E]/eV)))  + '/scatamp.dat')
     tmp_data2 = np.loadtxt(fold_C + 'E' + str(np.int32(np.rint(nrg[i_E]/eV)))  + '/scatamp.dat')
     # Only take 180 degrees
@@ -197,7 +197,7 @@ def TI_IAM(index, i_E_max, target_w):
                     f2 = f_C.copy()
                 else:
                     f2 = f_H.copy()
-                Rij = target_cart_rot[i][:] - target_cart_rot[j][:]
+                Rij = target_cart_rot[i][:] - target_cart_rot[j][:] ##double check this is correct
                 Rij_mag = np.linalg.norm(Rij)
                 if Rij_mag < threshold:  # Filter based on threshold
                     q_dot = 2.*k_r[:i_E_max]*Rij[2]
@@ -334,26 +334,21 @@ if __name__ == '__main__':
         np.savetxt(dir + Target + '_TI-IAM_Rij_' + threshold_case + '_' + str(np.round(I,decimals=2)) + '.dat', data)
     
     print('Done.')
-    
-    # ----------------------------------------------------------------------------
-    #             Plotting Results (after all computations are complete)
-    # ----------------------------------------------------------------------------
+
+    # PLOTTING RESULTS (run at very end)
     fig, axs = plt.subplots(3, 1)  # 3 rows, 1 column
 
-    target_dirs = [('camphor', 'camphor/'), ('fenchone', 'fenchone/')]
-    
-    for ax, threshold in [(axs[0], 'lt4'), (axs[1], 'lt6'), (axs[2], 'lt8')]:
-        for target_name, target_dir in target_dirs:
-            fname = target_name + '_IAM_Rij_' + threshold + '_0.41.dat'
-            data = np.loadtxt(target_dir + fname)
-            ax.plot(data[:, 0], data[:, 2], label=target_name)
-        ax.set_title("Rij < " + threshold[2:])
-        ax.legend()
+    axs[0].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt4_0.41.dat')[:, 2], label='camphor')
+    axs[0].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt4_0.41.dat')[:, 2], label='fenchone')
+    axs[0].set_title("Rij < 4")
 
-    axs[0].set_ylabel('Differential Cross Section (a.u.)')
-    axs[1].set_ylabel('Differential Cross Section (a.u.)')
-    axs[2].set_ylabel('Differential Cross Section (a.u.)')
-    axs[2].set_xlabel('Energy (eV)')
+    axs[1].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt6_0.41.dat')[:, 2], label='camphor')
+    axs[1].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt6_0.41.dat')[:, 2], label='fenchone')
+    axs[1].set_title("Rij < 6")
+
+    axs[2].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt8_0.41.dat')[:, 2], label='camphor')
+    axs[2].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt8_0.41.dat')[:, 2], label='fenchone')
+    axs[2].set_title("Rij < 8")
 
     plt.tight_layout()
     plt.savefig("Filtered_BL_analysis.pdf")
