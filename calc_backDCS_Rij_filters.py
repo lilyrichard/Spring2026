@@ -30,7 +30,7 @@ omega = 2.*np.pi*c/wavelen
 TS_case = 'eq'
 # TS_case = 'ff'
 # TS_case = 'Ey'
-Target = 'fenchone'
+Target = 'vertonal'
 # Target = 'butane_anti'
 # Target = 'butane_gauche'
 dir = Target + '/'
@@ -336,19 +336,29 @@ if __name__ == '__main__':
     print('Done.')
 
     # PLOTTING RESULTS (run at very end)
-    fig, axs = plt.subplots(3, 1)  # 3 rows, 1 column
+    fig, axs = plt.subplots(3, 1, sharex=True, sharey=True)  # 3 rows, 1 column
 
     axs[0].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt4_0.41.dat')[:, 2], label='camphor')
     axs[0].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt4_0.41.dat')[:, 2], label='fenchone')
+    axs[0].plot(np.loadtxt('./vertonal/vertonal_IAM_Rij_lt4_0.41.dat')[:, 0], np.loadtxt('./vertonal/vertonal_IAM_Rij_lt4_0.41.dat')[:, 2], label='vertonal')
     axs[0].set_title("Rij < 4")
+    axs[0].set_xlabel('Energy (eV)')
+    axs[0].set_ylabel('DCS')
+    axs[0].legend(loc='upper right')
 
     axs[1].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt6_0.41.dat')[:, 2], label='camphor')
     axs[1].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt6_0.41.dat')[:, 2], label='fenchone')
+    axs[1].plot(np.loadtxt('./vertonal/vertonal_IAM_Rij_lt6_0.41.dat')[:, 0], np.loadtxt('./vertonal/vertonal_IAM_Rij_lt6_0.41.dat')[:, 2], label='vertonal')
     axs[1].set_title("Rij < 6")
+    axs[1].set_xlabel('Energy (eV)')
+    axs[1].set_ylabel('DCS')
 
     axs[2].plot(np.loadtxt('./camphor/camphor_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('./camphor/camphor_IAM_Rij_lt8_0.41.dat')[:, 2], label='camphor')
     axs[2].plot(np.loadtxt('./fenchone/fenchone_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('./fenchone/fenchone_IAM_Rij_lt8_0.41.dat')[:, 2], label='fenchone')
+    axs[2].plot(np.loadtxt('./vertonal/vertonal_IAM_Rij_lt8_0.41.dat')[:, 0], np.loadtxt('./vertonal/vertonal_IAM_Rij_lt8_0.41.dat')[:, 2], label='vertonal')
     axs[2].set_title("Rij < 8")
+    axs[2].set_xlabel('Energy (eV)')
+    axs[2].set_ylabel('DCS')
 
     plt.tight_layout()
     plt.savefig("Filtered_BL_analysis.pdf")
