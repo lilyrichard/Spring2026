@@ -15,7 +15,7 @@ TS_case = 'eq'
 # TS_case = 'ff'
 # TS_case = 'Ey'
 
-Target_list = ['camphor_cat', 'fenchone_cat', 'vertonal_cat']
+Target_list = ['camphor_cat', 'fenchone_cat']
 
 # ----------------------------------------------------------------------------
 #             Set up the frame of the figure
