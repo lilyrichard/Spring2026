@@ -17,6 +17,10 @@ def load_plot_data(path):
 
 fig, axs = plt.subplots(3, 1, sharex=True, sharey=True, figsize=(6.5, 8.5))  # 3 rows, 1 column, publication size
 
+for ax, label in zip(axs, ['a)', 'b)', 'c)']):
+    ax.text(-0.12, 1.03, label, transform=ax.transAxes,
+            fontsize=18, fontweight='bold', va='top')
+
 camphor_lt4 = load_plot_data('./camphor/camphor_IAM_Rij_lt4_0.41.dat')
 fenchone_lt4 = load_plot_data('./fenchone/fenchone_IAM_Rij_lt4_0.41.dat')
 #vertonal_lt4 = load_plot_data('./vertonal/vertonal_IAM_Rij_lt4_0.41.dat')
